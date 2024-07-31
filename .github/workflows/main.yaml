@@ -1,0 +1,42 @@
+name: Test, Build and Release apk
+
+on: push
+
+env:
+  FLUTTER_VERSION: 3.22.3
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: "zulu"
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "stable"
+          architecture: x64
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build APP
+        run: flutter build apk --release
+
+#      - name: Push APK to Releases
+#        uses: ncipollo/release-action@v1
+#        with:
+#          artifacts: "build/app/outputs/apk/debug/*.apk"
+#          token: ${{ secrets.TOKEN }}
