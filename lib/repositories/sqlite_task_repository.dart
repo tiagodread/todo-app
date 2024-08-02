@@ -30,7 +30,18 @@ class SQLiteTaskRepository extends ChangeNotifier implements TaskRepository {
   Future<List<Task>> getAllTasks() async {
     final db = await database;
     final List<Map<String, dynamic>> maps =
-        await db.query('tasks', orderBy: 'createdAt DESC');
+        await db.query('tasks', orderBy: 'createdAt DESC', where: 'isCompleted = 0');
+
+    return List.generate(maps.length, (i) {
+      return Task.fromMap(maps[i]);
+    });
+  }
+
+  @override
+  Future<List<Task>> getCompletedTasks() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps =
+    await db.query('tasks', orderBy: 'createdAt DESC');
 
     return List.generate(maps.length, (i) {
       return Task.fromMap(maps[i]);
@@ -73,6 +84,7 @@ class SQLiteTaskRepository extends ChangeNotifier implements TaskRepository {
       where: 'id = ?',
       whereArgs: [task.id],
     );
+    notifyListeners();
   }
 
   @override
@@ -83,5 +95,6 @@ class SQLiteTaskRepository extends ChangeNotifier implements TaskRepository {
       where: 'id = ?',
       whereArgs: [id],
     );
+    notifyListeners();
   }
 }
