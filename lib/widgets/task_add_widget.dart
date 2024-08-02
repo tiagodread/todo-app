@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/models/task_model.dart';
+import 'package:todo/models/task.dart';
+import 'package:todo/repositories/task_repository.dart';
+
+import '../repositories/sqlite_task_repository.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({
@@ -12,6 +15,15 @@ class AddTask extends StatefulWidget {
 
 class _AddTaskState extends State<AddTask> {
   final textController = TextEditingController();
+  late SQLiteTaskRepository taskRepository;
+  late Future<List<Task>> taskListFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    taskRepository = SQLiteTaskRepository();
+    taskListFuture = taskRepository.getAllTasks();
+  }
 
   @override
   void dispose() {
@@ -28,6 +40,7 @@ class _AddTaskState extends State<AddTask> {
             child: Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: TextField(
+                key: const Key("task-input"),
                 controller: textController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -39,16 +52,24 @@ class _AddTaskState extends State<AddTask> {
           flex: 1,
           child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Consumer(
-                  builder: (context, value, child) => ElevatedButton(
-                      onPressed: () {
-                        final widget = context.read<TaskModel>();
-                        if (textController.text.isNotEmpty) {
-                          widget.addTask(textController.text);
-                          textController.clear();
-                        }
-                      },
-                      child: const Text("ADD")))),
+              child: ElevatedButton(
+                  key: const Key("task-add-button"),
+                  onPressed: () async {
+                    if (textController.text.isNotEmpty) {
+                      Task task = Task(
+                        title: textController.text,
+                        description: '',
+                        createdAt: DateTime.now(),
+                        isCompleted: false,
+                        rewardInSatoshis: 0,
+                      );
+                      await Provider.of<SQLiteTaskRepository>(context,
+                              listen: false)
+                          .addTask(task);
+                      textController.clear();
+                    }
+                  },
+                  child: const Text("ADD"))),
         ),
       ],
     );

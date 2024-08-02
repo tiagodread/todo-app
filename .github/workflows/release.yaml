@@ -1,6 +1,9 @@
-name: Build & Test
+name: Release APK
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 env:
   FLUTTER_VERSION: 3.22.3
@@ -34,3 +37,9 @@ jobs:
 
       - name: Build APP
         run: flutter build apk --release
+
+      - name: Push APK to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/*.apk"
+          token: ${{ secrets.TOKEN }}
