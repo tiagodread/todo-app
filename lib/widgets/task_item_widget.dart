@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../models/task.dart';
+
 class TaskItem extends StatefulWidget {
-  final String itemText;
+  final Task task;
   const TaskItem(
-    this.itemText, {
+    this.task, {
     super.key,
   });
 
@@ -12,8 +14,6 @@ class TaskItem extends StatefulWidget {
 }
 
 class _TaskItemState extends State<TaskItem> {
-  bool isCompleted = false;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,19 +21,19 @@ class _TaskItemState extends State<TaskItem> {
       child: Row(
         children: [
           Checkbox(
-              value: isCompleted,
+              value: widget.task.isCompleted,
               onChanged: (bool? value) {
                 setState(() {
-                  isCompleted = value!;
+                  widget.task.isCompleted = value!;
                 });
               }),
           SizedBox(
             width: 350,
-            child: Text(widget.itemText,
+            child: Text(widget.task.title,
                 style: TextStyle(
                     fontSize: 20,
                     overflow: TextOverflow.clip,
-                    decoration: isCompleted
+                    decoration: widget.task.isCompleted
                         ? TextDecoration.lineThrough
                         : TextDecoration.none)),
           )

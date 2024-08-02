@@ -1,25 +1,40 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/models/task_model.dart';
+import 'package:todo/repositories/sqlite_task_repository.dart';
 import 'package:todo/widgets/task_item_widget.dart';
 
-class TaskList extends StatelessWidget {
+import '../models/task.dart';
+
+class TaskList extends StatefulWidget {
   const TaskList({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<TaskModel>(builder: (context, value, child) {
-      
-      final widget = context.read<TaskModel>();
-      final List<TaskItem> taskItems = [];
-      
-      widget.taskList.forEach((task) {
-        taskItems.add(TaskItem(task.toString()));
-      });
+  State<TaskList> createState() => _TaskListState();
+}
 
-      return ListView(
-        children: taskItems,
-      );
-    });
+class _TaskListState extends State<TaskList> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<SQLiteTaskRepository>(
+        builder: (context, taskRepository, child) => FutureBuilder<List<Task>>(
+            future: taskRepository.getAllTasks(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('Add some work to do!'));
+              } else {
+                List<Task> tasks = snapshot.data!;
+                return ListView.builder(
+                  itemCount: tasks.length,
+                  itemBuilder: (context, index) {
+                    Task task = tasks[index];
+                    return TaskItem(task);
+                  },
+                );
+              }
+            }));
   }
 }
