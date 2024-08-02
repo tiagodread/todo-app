@@ -1,6 +1,6 @@
 name: Build & Test
 
-on: push
+on: pull_request
 
 env:
   FLUTTER_VERSION: 3.22.3
