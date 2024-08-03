@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/constants/colors.dart';
 import 'package:todo/repositories/sqlite_task_repository.dart';
 import 'package:todo/widgets/task_item_widget.dart';
 
@@ -31,7 +32,7 @@ class _TaskListState extends State<TaskList> {
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
                     Task task = tasks[index];
-                    return TaskItem(task);
+                    return TaskItem(task, AppColors.getColor(index));
                   },
                 );
               }
