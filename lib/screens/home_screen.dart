@@ -7,20 +7,24 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("TODO List"),
-        ),
-        body: const Column(
-          children: [
-            Expanded(
-                flex: 5,
-                child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: TaskList(),
-                )),
-            Expanded(flex: 1, child: AddTask())
-          ],
-        ));
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text("Task List"),
+          ),
+          body: const Column(
+            children: [
+              Expanded(
+                  flex: 5,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 10, left: 10.0, right: 10.0),
+                    child: TaskList(),
+                  )),
+              Expanded(flex: 1, child: AddTask())
+            ],
+          )),
+    );
   }
 }

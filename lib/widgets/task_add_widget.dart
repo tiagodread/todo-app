@@ -67,6 +67,7 @@ class _AddTaskState extends State<AddTask> {
                               listen: false)
                           .addTask(task);
                       textController.clear();
+                      FocusManager.instance.primaryFocus?.unfocus();
                     }
                   },
                   child: const Text("ADD"))),
