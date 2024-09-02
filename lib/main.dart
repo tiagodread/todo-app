@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/repositories/sqlite_task_repository.dart';
+import 'package:todo/repositories/api_task_repository.dart';
 import 'package:todo/screens/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(ChangeNotifierProvider(
-    create: (context) => SQLiteTaskRepository(),
+    create: (context) => APITaskRepository(),
     child: const App(),
   ));
 }

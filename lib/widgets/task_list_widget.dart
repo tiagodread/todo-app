@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/constants/colors.dart';
-import 'package:todo/repositories/sqlite_task_repository.dart';
+import 'package:todo/repositories/api_task_repository.dart';
 import 'package:todo/widgets/task_item_widget.dart';
 
 import '../models/task.dart';
@@ -16,7 +16,7 @@ class TaskList extends StatefulWidget {
 class _TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<SQLiteTaskRepository>(
+    return Consumer<APITaskRepository>(
         builder: (context, taskRepository, child) => FutureBuilder<List<Task>>(
             future: taskRepository.getAllTasks(),
             builder: (context, snapshot) {
@@ -25,7 +25,8 @@ class _TaskListState extends State<TaskList> {
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('Add some work to do!'));
+                return const Center(
+                    child: Text('Start adding some work to do!'));
               } else {
                 List<Task> tasks = snapshot.data!;
                 return ListView.builder(
