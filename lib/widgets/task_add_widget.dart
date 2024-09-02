@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/task.dart';
-import 'package:todo/repositories/task_repository.dart';
 
-import '../repositories/sqlite_task_repository.dart';
+import '../repositories/api_task_repository.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({
@@ -15,13 +14,13 @@ class AddTask extends StatefulWidget {
 
 class _AddTaskState extends State<AddTask> {
   final textController = TextEditingController();
-  late SQLiteTaskRepository taskRepository;
+  late APITaskRepository taskRepository;
   late Future<List<Task>> taskListFuture;
 
   @override
   void initState() {
     super.initState();
-    taskRepository = SQLiteTaskRepository();
+    taskRepository = APITaskRepository();
     taskListFuture = taskRepository.getAllTasks();
   }
 
@@ -58,12 +57,12 @@ class _AddTaskState extends State<AddTask> {
                     if (textController.text.isNotEmpty) {
                       Task task = Task(
                         title: textController.text,
-                        description: '',
+                        description: 'test',
                         createdAt: DateTime.now(),
                         isCompleted: false,
                         rewardInSatoshis: 0,
                       );
-                      await Provider.of<SQLiteTaskRepository>(context,
+                      await Provider.of<APITaskRepository>(context,
                               listen: false)
                           .addTask(task);
                       textController.clear();

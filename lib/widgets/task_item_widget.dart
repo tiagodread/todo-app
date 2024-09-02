@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/constants/colors.dart';
 
 import '../models/task.dart';
-import '../repositories/sqlite_task_repository.dart';
+import '../repositories/api_task_repository.dart';
 
 class TaskItem extends StatefulWidget {
   final Task task;
   final Color taskItemColor;
   const TaskItem(
-    this.task, this.taskItemColor, {
+    this.task,
+    this.taskItemColor, {
     super.key,
   });
 
@@ -18,14 +18,13 @@ class TaskItem extends StatefulWidget {
 }
 
 class _TaskItemState extends State<TaskItem> {
-  late SQLiteTaskRepository taskRepository;
+  late APITaskRepository taskRepository;
   late Future<List<Task>> taskListFuture;
-
 
   @override
   void initState() {
     super.initState();
-    taskRepository = SQLiteTaskRepository();
+    taskRepository = APITaskRepository();
     taskListFuture = taskRepository.getAllTasks();
   }
 
@@ -115,7 +114,7 @@ class _TaskItemState extends State<TaskItem> {
                                       Task updatedTask = widget.task;
                                       updatedTask.isCompleted = true;
                                       updatedTask.completedAt = DateTime.now();
-                                      Provider.of<SQLiteTaskRepository>(context,
+                                      Provider.of<APITaskRepository>(context,
                                               listen: false)
                                           .updateTask(updatedTask);
                                     });
@@ -140,11 +139,11 @@ class _TaskItemState extends State<TaskItem> {
                                   onPressed: () {
                                     _showConfirmationDialog(context,
                                         "Would you like to delete this task?",
-                                            () {
-                                          Provider.of<SQLiteTaskRepository>(context,
+                                        () {
+                                      Provider.of<APITaskRepository>(context,
                                               listen: false)
-                                              .deleteTask(widget.task.id);
-                                        });
+                                          .deleteTask(widget.task.id);
+                                    });
                                   },
                                   iconSize: 35,
                                   icon: const Icon(
