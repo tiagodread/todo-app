@@ -40,39 +40,13 @@ class _AddTaskState extends State<AddTask> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.circle,
-                    color: Colors.transparent,
-                    size: 50,
-                  ),
-                  IconButton(
-                    iconSize: 35,
-                    icon: Icon(
-                      Icons.close,
-                      color: Colors.grey,
-                    ),
-                    onPressed: null,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const Padding(
           padding: EdgeInsets.only(bottom: 15.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Create new task",
-                style: const TextStyle(
+                "Add new task",
+                style: TextStyle(
                   fontSize: 25,
                   overflow: TextOverflow.clip,
                 ),
@@ -84,7 +58,7 @@ class _AddTaskState extends State<AddTask> {
           padding: EdgeInsets.all(8.0),
           child: Text(
             "Title",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               overflow: TextOverflow.clip,
             ),
@@ -93,6 +67,7 @@ class _AddTaskState extends State<AddTask> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
+            autofocus: true,
             key: const Key("task-input"),
             controller: titleTextController,
             decoration: const InputDecoration(
@@ -126,7 +101,7 @@ class _AddTaskState extends State<AddTask> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               const Text(
-                "Date",
+                "Due date",
                 style: TextStyle(
                   fontSize: 17,
                   overflow: TextOverflow.clip,
@@ -136,35 +111,42 @@ class _AddTaskState extends State<AddTask> {
                 onPressed: () => _selectDate(context),
                 child: Text(selectedDateString,
                 style: const TextStyle(
+                    fontSize: 17,
+                    overflow: TextOverflow.clip,
                   decoration: TextDecoration.underline
                 ),),
               ),
             ],
           ),
         ),
-        ElevatedButton(
-            key: const Key("task-add-button"),
-            onPressed: () async {
-              if (titleTextController.text.isNotEmpty) {
-                Task task = Task(
-                  title: titleTextController.text,
-                  description: descriptionTextController.text.isNotEmpty
-                      ? descriptionTextController.text
-                      : "",
-                  createdAt: DateTime.now(),
-                  dueDate: selectedDate,
-                  isCompleted: false,
-                  rewardInSatoshis: 0,
-                );
-                await Provider.of<APITaskRepository>(context, listen: false)
-                    .addTask(task);
-                titleTextController.clear();
-                descriptionTextController.clear();
-                FocusManager.instance.primaryFocus?.unfocus();
-                Navigator.pop(context);
-              }
-            },
-            child: const Text("Done"))
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                key: const Key("task-add-button"),
+                onPressed: () async {
+                  if (titleTextController.text.isNotEmpty) {
+                    Task task = Task(
+                      title: titleTextController.text,
+                      description: descriptionTextController.text.isNotEmpty
+                          ? descriptionTextController.text
+                          : "",
+                      createdAt: DateTime.now(),
+                      dueDate: selectedDate,
+                      isCompleted: false,
+                      rewardInSatoshis: 0,
+                    );
+                    await Provider.of<APITaskRepository>(context, listen: false)
+                        .addTask(task);
+                    titleTextController.clear();
+                    descriptionTextController.clear();
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text("Create")),
+          ],
+        )
       ],
     );
   }
