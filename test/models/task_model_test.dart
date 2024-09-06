@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo/models/task.dart';
 
 void main() {
   group("Task Model", () {

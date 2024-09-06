@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../models/task.dart';
@@ -73,8 +74,8 @@ class _TaskItemState extends State<TaskItem> {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 8.0),
                                 child: Text(
-                                  widget.task.createdAt
-                                      .toString(), // TODO: Use Due date instead
+                                  DateFormat('dd/MM/yyyy', 'pt_BR')
+                                      .format(widget.task.createdAt),
                                   style: const TextStyle(
                                     fontSize: 15,
                                     overflow: TextOverflow.clip,

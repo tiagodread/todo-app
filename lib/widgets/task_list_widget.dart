@@ -33,7 +33,10 @@ class _TaskListState extends State<TaskList> {
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
                     Task task = tasks[index];
-                    return TaskItem(task, AppColors.getColor(index));
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: TaskItem(task, AppColors.getColor(index)),
+                    );
                   },
                 );
               }

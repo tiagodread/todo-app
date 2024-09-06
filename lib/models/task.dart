@@ -9,6 +9,7 @@ class Task {
   String title;
   String description;
   DateTime createdAt;
+  DateTime? dueDate;
   DateTime? completedAt;
   bool isCompleted;
   int? rewardInSatoshis;
@@ -18,6 +19,7 @@ class Task {
     required this.title,
     required this.description,
     required this.createdAt,
+    this.dueDate,
     this.completedAt,
     this.isCompleted = false,
     this.rewardInSatoshis = 0,
@@ -29,6 +31,7 @@ class Task {
       title: json['title'] as String,
       description: json['description'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
+      dueDate: DateTime.parse(json['due_date'] as String),
       isCompleted: json['is_completed'] as bool,
       rewardInSatoshis: json['reward_in_satoshis'] ?? 0,
     );
@@ -40,6 +43,7 @@ class Task {
       'title': title,
       'description': description,
       'created_at': createdAt.toIso8601String(),
+      'due_date': dueDate?.toIso8601String(),
       'is_completed': isCompleted,
       'reward_in_satoshis': rewardInSatoshis,
     };
@@ -51,6 +55,7 @@ class Task {
       'title': title,
       'description': description,
       'createdAt': createdAt.toIso8601String(),
+      'dueDate': dueDate?.toIso8601String(),
       'completedAt': completedAt?.toIso8601String(),
       'isCompleted': isCompleted,
       'rewardInSatoshis': rewardInSatoshis,
@@ -63,6 +68,7 @@ class Task {
       title: map['title'],
       description: map['description'],
       createdAt: DateTime.parse(map['createdAt']),
+      dueDate: DateTime.parse(map['dueDate']),
       completedAt: (map['completedAt'] == null || map['completedAt'] == 'null')
           ? null
           : DateTime.parse(map['completedAt']),

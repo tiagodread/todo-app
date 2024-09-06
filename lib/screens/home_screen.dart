@@ -10,21 +10,27 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text("Task List"),
-          ),
-          body: const Column(
-            children: [
-              Expanded(
-                  flex: 5,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10, left: 10.0, right: 10.0),
-                    child: TaskList(),
-                  )),
-              Expanded(flex: 1, child: AddTask())
-            ],
-          )),
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("Task List"),
+        ),
+        body: const TaskList(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _showBottomSheet(context);
+          },
+          child: const Icon(Icons.add),
+        ),
+      ),
     );
   }
+}
+
+Future<void> _showBottomSheet(BuildContext context) {
+  return showModalBottomSheet<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return const AddTask();
+    },
+  );
 }
