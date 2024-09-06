@@ -78,6 +78,7 @@ class APITaskRepository extends ChangeNotifier implements TaskRepository {
             'title': task.title,
             'description': 'test',
             'created_at': task.createdAt.toUtc().toIso8601String(),
+            'due_date': task.dueDate?.toUtc().toIso8601String(),
             'is_completed': task.isCompleted,
             'reward_in_sats': task.rewardInSatoshis
           }));

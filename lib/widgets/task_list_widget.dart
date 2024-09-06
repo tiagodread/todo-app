@@ -23,7 +23,7 @@ class _TaskListState extends State<TaskList> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
+                return const Center(child: Text('Error: could now connect to server'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Center(
                     child: Text('Start adding some work to do!'));
@@ -33,7 +33,10 @@ class _TaskListState extends State<TaskList> {
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
                     Task task = tasks[index];
-                    return TaskItem(task, AppColors.getColor(index));
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: TaskItem(task, AppColors.getColor(index)),
+                    );
                   },
                 );
               }
